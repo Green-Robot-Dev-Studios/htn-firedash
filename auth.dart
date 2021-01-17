@@ -7,6 +7,7 @@ import 'dash.dart';
 String id;
 
 String getId() {
+  print(id);
   return id;
 }
 

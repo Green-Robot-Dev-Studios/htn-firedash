@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'auth.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -24,10 +23,19 @@ class DashboardState extends State<Dashboard> {
     //var list = querySnapshot.documents;
     List<Marker> _markers = <Marker>[];
     querySnapshot.docs.forEach((e) {
-      _markers.add(Marker(
-          markerId: MarkerId('n/a'),
-          position: LatLng(e.data()["lat"], e.data()["lon"]),
-          infoWindow: InfoWindow(title: 'n/a')));
+      if (e.data()["ok"]) {
+        _markers.add(Marker(
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen),
+            markerId: MarkerId('n/a'),
+            position: LatLng(e.data()["lat"], e.data()["lon"]),
+            infoWindow: InfoWindow(title: 'n/a')));
+      } else {
+        _markers.add(Marker(
+            markerId: MarkerId('n/a'),
+            position: LatLng(e.data()["lat"], e.data()["lon"]),
+            infoWindow: InfoWindow(title: 'n/a')));
+      }
     });
     print(_markers);
     return _markers;
@@ -58,7 +66,7 @@ class DashboardState extends State<Dashboard> {
                 },
                 initialCameraPosition: CameraPosition(
                   target: _center,
-                  zoom: 11.0,
+                  zoom: 1.0,
                 ),
               );
             }
